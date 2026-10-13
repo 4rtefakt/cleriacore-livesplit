@@ -16,8 +16,7 @@ local ws, queue, status, retry_at = nil, {}, "not connected", 0
 local sent = 0
 
 local function connect()
-    if ws then ws:close() end
-    ws = cleria.net.websocket()
+    if ws then ws:close() else ws = cleria.net.websocket() end   -- one socket, reused: a closed one is only freed by the collector
     ws:open(address)
     status = "connecting"
 end
