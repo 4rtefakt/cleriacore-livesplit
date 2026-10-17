@@ -15,9 +15,11 @@ local game_time = S.get("GameTime", false)           -- send the play time, cuts
 local ws, queue, status, retry_at = nil, {}, "not connected", 0
 local sent = 0
 
+local sock                                           -- the one socket this mod makes: a dropped one is only freed by the collector
 local function connect()
-    if ws then ws:close() end
-    ws = cleria.net.websocket()
+    sock = sock or cleria.net.websocket()
+    sock:close()
+    ws = sock
     ws:open(address)
     status = "connecting"
 end
